@@ -1,5 +1,63 @@
-<h1>JSON API Search Profile</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="A showcase of the best typefaces from the Google web fonts directory.">
+    <title>Beautiful web type &mdash; the best typefaces from the Google web fonts directory</title>
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <link href="stylesheets/application.css" rel='stylesheet' type="text/css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Abril+Fatface|Open+Sans:300,400,600,700,800|Gentium+Book+Basic:400,400italic|Vollkorn:400italic,400'
+          rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Gravitas+One|Lato:100,900|Old+Standard+TT:400,400italic|PT+Serif:400|PT+Sans+Narrow:700'
+          rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans:700|Merriweather:400,900|Playfair+Display:400,900,700italic|Oswald:700|PT+Mono'
+          rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Cardo:400,400italic' rel='stylesheet' type='text/css'>
+</head>
 
-<p><img alt="" src="https://raw.githubusercontent.com/agco-adm/json-api-search-profile/master/public/search-example-dealer-api.png" style="width: 800px; height: 240px;" /></p>
+<body class="index">
 
-<p>&nbsp;</p>
+<section id="container">
+    <section class="samples">
+        <section class="sample" id="title">
+            <section class="text">
+                <h1>JSON API Search Profile</h1>
+
+                <h2>Multi-Resource Filtering and Multi-Level Aggregations</a>.</h2>
+
+                <section class="intro">
+                    <p>
+                        The data model below represents a (simplified) view of a Dealer API domain and will be used throughout the document to further explain the concepts in this profile
+                    </p>
+
+                    <p>
+                        <img src="https://raw.githubusercontent.com/agco-adm/json-api-search-profile/master/public/search-example-dealer-api.png"
+                             style="width: 800px; height: 240px;"/></p>
+
+                    <h3>Multi-Resource Filtering</h3>
+
+                    <p>The JSON API spec <a href="http://jsonapi.org/format/#fetching-filtering">standardises filtering on a single resource</a>.
+                       This profile adds the ability to apply filters on linked resources, which can be nested multiple levels deep.</p>
+
+                    <h4>Examples</h4>
+
+                    <p>Simple : Get all dealers located in the state of NY</p>
+                    <pre><code class="language-http">/dealers?state_province.code=US-NY</code></pre>
+
+                    <p>Linked Resource : Get all dealers with a zip code of 10005 and an 'MFP' contract code</p>
+                    <pre><code class="language-http">/dealers?zip=10005&amp;current_contracts.code=MFP</code></pre>
+
+                    <p>Multiple Linked Resources : Get all dealers located in the state of NY and have a contract to sell MF equipment</p>
+                    <pre><code class="language-http">/dealers?state_province.code=US-NY&amp;current_contracts.brand.code=MF</code></pre>
+
+                </section>
+            </section>
+        </section>
+
+    </section>
+</section>
+
+</body>
+</html>
+
