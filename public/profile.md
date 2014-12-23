@@ -75,7 +75,7 @@ The 'aggregations' output is inserted into the 'meta' portion of the response, t
 ### Aggregation families
 The various aggregation types can be divided into 2 families
 #### Metrics
-These aggregations compute metrics over a set of documents
+These aggregations return value(s) derived from the documents returned by the your query.
 
 - Compute statistics (min/max/avg/sum/count) on the number_of_employees 
 ```
@@ -99,7 +99,7 @@ These aggregations compute metrics over a set of documents
 #### Buckets
 The terms aggregation is a bucketing aggregation.  
 
-When the aggregation is executed the specified 'attribute' value is evaluated to whether it matches the bucket criteria. If a match, the document is placed inside the bucket and the aggregation continues. 
+Bucket aggregations define criteria for ‘buckets’ (think of them as ‘groups’) and documents 'fall' into relevant buckets. A bucket therefore contains a document set
 
 ##### Nesting
 ```
@@ -255,5 +255,23 @@ Here is an elaboration of a previous example  ( Get 5 most recent founded dealer
 
 ### Aggregation types
 
-                    
+The aggregation types and output formnat are more or less copied over as-is from Elasticsearch. Therefore it's probably a good idea to visit the Elasticsearch documentation pages to get a more in-depth understanding on the various aggregation types : http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-aggregations.html.
+
+####  Mapping ES - JSONAPI Search Profile
+
+Some of the paremeters are renamed to remain consistent with the rest of the JSONAPI spec :
+- field -> attribute ( in order to prevent confusion with JSONAPI fields )
+```
+?...zip_agg.attribute=zip
+```
+- include -> fields  
+```
+?...mostrecent_agg.fields=id,code,name
+```
+#### Parameter Mapping
+
+### Lock-in
+
+The profile Aggregation GET syntax maps in a generic way to Elasticsearch POST requests, however if another search engine would be used to back the implementation of the profile, it should be possible to re-map the syntax (e.g. SOLR facets / pivots ).
+
 
