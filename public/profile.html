@@ -65,6 +65,28 @@
                         /dealers?state_province.code=US-NY&amp;current_contracts.brand.code=MF
                     </code>
 
+                    <h3>Multi-Level Aggregations</h3>
+
+                    <p>Another feature this profile adds is the ability to aggregate the primary or linked resources
+                        data. This may be combined with filtering on the primary or linked resources,
+                        and is fully interoperable with JSON API <a href="http://jsonapi.org/format/#fetching-includes">inclusion</a>
+                        and <a href="http://jsonapi.org/format/#fetching-sparse-fieldsets">sparse fieldsets</a>
+                        features.</p>
+
+                    <code>/dealers?aggregations=zip_agg&zip_agg.type=terms&zip_agg.field=zip</code>
+
+
+
+
+                    The aggregation types available can be divided into 2 categories : Bucketing and Metrics
+
+
+                    expressed functions can either target the resource itself or linked resources, and can be nested as
+                    well ( Bucketing Aggregations )
+                    A URL query parameter 'aggregations' denotes the aggregation and contains a comma seperated list of
+                    values which are essentially labels
+
+
                 </section>
             </section>
         </section>
