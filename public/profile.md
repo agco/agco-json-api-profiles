@@ -101,7 +101,9 @@ The 'Quick Example' terms aggregation is a bucketing aggregation.
 When the aggregation is executed the specified 'attribute' value is evaluated whether it matches the bucket criteria. If a match, the document is placed inside the bucket and the aggregation continues. 
 
 #### Nesting - Metrics within Buckets
-Metrics aggregations can be nested whithin Bucket aggregations so they execute within the context of that bucket.   
+Metrics aggregations can be nested within Bucket aggregations in order to have them executed in the context of that bucket. 
+
+- Compute statistics (min/max/avg/sum/count) on the number_of_employees per zip code
 ```
 /dealers/search?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.attribute=zip&zip_agg.aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.attribute=links.dealer_misc.number_of_employees
 ```
@@ -141,7 +143,7 @@ Metrics aggregations can be nested whithin Bucket aggregations so they execute w
 #### Nesting - Buckets within Buckets
 Bucket aggregations can also be nested whithin other Bucket aggregations.
 
-- Group dealers by brand, product_type, zip
+- Compute count of dealers per brand / product_type / zip
 ```
 /dealers/search?aggregations=brand_agg&brand_agg.type=terms&brand_agg.attribute=current_contracts.brand.code&brand_agg.aggregations=product_type_agg&product_type_agg.type=terms&product_type_agg.attribute=current_contracts.product_type.code&product_type_agg.aggregations=zip_agg&zip_agg.type=terms&zip_agg.attribute=zip
 ```
