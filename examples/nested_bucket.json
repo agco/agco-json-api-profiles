@@ -1,0 +1,46 @@
+{
+    "meta": {
+        "aggregations": {
+            "brand_agg": [
+                {
+                    "key": "MF",
+                    "count": 256,
+                    "product_type_agg": [
+                        {
+                            "key": "PAS",
+                            "count": 307,
+                            "zip_agg": [
+                                {
+                                    "key": "14530",
+                                    "count": 1
+                                },
+                                {
+                                    "key": "17268",
+                                    "count": 1
+                                }
+                                //... more results
+                            ]
+                        },
+                        {
+                            "key": "HAY",
+                            "count": 105,
+                            "zip_agg": [
+                                {
+                                    "key": "14530",
+                                    "count": 1
+                                },
+                                {
+                                    "key": "17268",
+                                    "count": 1
+                                }
+                                //... more results
+                            ]
+                        }
+                        //... more results
+                    ]
+                }
+                //... more results
+            ]
+        }
+    }
+}
