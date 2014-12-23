@@ -70,7 +70,7 @@ It can contain a single or comma seperated list of values, which are essentially
 
 Each label has an attribute which indicates the 'type' of aggregation. Depending on the value provided (e.g. terms, stats, top_hits) other attributes can be set.
 
-The 'aggregations' output is inserted into the 'meta' portion of the response, the keys ( e.g. zip_agg ) correlate with the labels set in the request URL.
+The 'aggregations' output is inserted into the 'meta' portion of the response, the keys ( e.g. zip_agg ) correlate with the labels set as part of the request URL.
 
 ### Buckets and Metrics
 The various aggregation types can be divided into 2 categories
