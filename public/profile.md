@@ -13,11 +13,13 @@ JSON API standardises filtering on the [primary resource](http://jsonapi.org/for
 This profile adds the ability to apply filters on multiple linked resources
 
 ### Examples
-- Filter on a linked resource  
+
+- Filter on a linked resource   
   ```
   # Fetch all dealers located in the state of NY  
   /dealers?state_province.code=US-NY
   ```
+
 - Combine with a regular resource filter   
   ```
   # Fetch all dealers with a zip code of 10005 and an 'MFP' contract code
