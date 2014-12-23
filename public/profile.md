@@ -256,8 +256,11 @@ Here is an elaboration of a previous example  ( Get 5 most recent founded dealer
 
 The aggregation types and output format are more or less copied over as-is from Elasticsearch :
 
-- Metrics : min, max, sum, avg, stats, extended_stats, percentiles, percentile_ranks, top_hits, cardinality, geo_bounds
-- Bucketing : terms, significant_terms, range, date_range, filter, filters, missing, histogram, date_histogram, geo_distance
+- Metrics :   
+  min, max, sum, avg, stats, extended_stats, percentiles, percentile_ranks, top_hits, cardinality, geo_bounds
+
+- Bucketing :
+  terms, significant_terms, range, date_range, filter, filters, missing, histogram, date_histogram, geo_distance
 
 Read through the Elasticsearch documentation pages to get a more in-depth understanding on the various aggregation types and the available parameters : http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-aggregations.html.
 
