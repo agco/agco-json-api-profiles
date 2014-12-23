@@ -64,7 +64,8 @@ This section standardises the aggregation of primary or linked resources data.
       ]
     }
   }
-//... ```
+//... 
+```
 
 
 The aggregation syntax may be combined with primary or [linked resource filters](#Linked-Resource-Filters), and is also fully interoperable with JSON API  [inclusion](http://jsonapi.org/format/#fetching-includes) and  [sparse fieldsets](http://jsonapi.org/format/#fetching-sparse-fieldsets) features. 
