@@ -105,10 +105,10 @@ The example ( Get count of dealers per zip code ) at the start of the [Aggregati
 ```
 /dealers/search?aggregations=zip_agg&...&zip_agg.aggregations=emp_stats_agg...
 ```
-Each label may specify an additional .aggregations attribute, this may contain a single or comma seperated list of additional nested aggregation labels. 
+Each label referring to a a bucket aggregation may specify an additional .aggregations attribute, this may contain a single or comma seperated list of additional nested aggregation labels. 
 
 ###### Metrics - Buckets
-Metrics aggregations can be nested within Bucket aggregations in order to have them executed in the context of that bucket. 
+Metrics aggregations can be nested within Bucket aggregations, this makes them execute in the context of that bucket. 
 
 ```
 # Compute statistics (min/max/avg/sum/count) on the number_of_employees per zip code
@@ -187,7 +187,7 @@ Metrics aggregations can be nested within Bucket aggregations in order to have t
 //...
 ```
 ###### Buckets - Buckets
-Bucket aggregations can also be nested whithin other Bucket aggregations.
+Bucket aggregations can also be nested within other Bucket aggregations.
 
 ```
 # Get count of dealers per brand / product_type / zip
@@ -239,7 +239,7 @@ Bucket aggregations can also be nested whithin other Bucket aggregations.
 }
 ```
 
-### Interop 
+### Features Interop
 
 The aggregation features may be combined with primary or [linked resource filters](#linked-resource-filters).
 ```
@@ -254,22 +254,27 @@ Here is an elaboration of a previous example  ( Get 5 most recent founded dealer
 
 ### Aggregation types
 
-The aggregation types and output formnat are more or less copied over as-is from Elasticsearch. Therefore it's probably a good idea to visit the Elasticsearch documentation pages to get a more in-depth understanding on the various aggregation types : http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-aggregations.html.
+The aggregation types and output format are more or less copied over as-is from Elasticsearch :
 
-####  Mapping ES - JSONAPI Search Profile
+- Metrics : min, max, sum, avg, stats, extended_stats, percentiles, percentile_ranks, top_hits, cardinality, geo_bounds
+- Bucketing : terms, significant_terms, range, date_range, filter, filters, missing, histogram, date_histogram, geo_distance
 
-Some of the paremeters are renamed to remain consistent with the rest of the JSONAPI spec :
-- field -> attribute ( in order to prevent confusion with JSONAPI fields )
+Read through the Elasticsearch documentation pages to get a more in-depth understanding on the various aggregation types and the available parameters : http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-aggregations.html.
+
+####  Elasticsearch vs Search Profile 
+
+Some of the paremeters are renamed to remain consistent with the rest of the JSONAPI spec.
+
+Most Elastisearch aggregations require a 'field' parameter (e.g. terms, range,...), this is expected as a 'property' attribute on the aggregation label.
 ```
-?...zip_agg.attribute=zip
+?...zip_agg.property=zip
 ```
-- include -> fields  
+The Elasticsearch top_hits aggregation accepts an 'include' parameter, this is expected as a 'fields' attribute on the aggregation label.
 ```
 ?...mostrecent_agg.fields=id,code,name
 ```
-#### Parameter Mapping
 
-### Lock-in
+### Elasticsearch lock-in
 
 The profile Aggregation GET syntax maps in a generic way to Elasticsearch POST requests, however if another search engine would be used to back the implementation of the profile, it should be possible to re-map the syntax (e.g. SOLR facets / pivots ).
 
