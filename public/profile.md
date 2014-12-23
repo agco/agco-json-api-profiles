@@ -1,5 +1,5 @@
 #JSON API Search Profile
-** Linked Resource Filters and Aggregations **
+**Linked Resource Filters and Aggregations**
 
 The data model below represents a (simplified) view of a Dealer API domain and will be used throughout the document to further explain the concepts in this profile
 
