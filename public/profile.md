@@ -40,7 +40,7 @@ This profile standardizes applying filters on attributes of [linked resources](h
   
 
 ## Multi-Level Aggregations
-This section standardises the aggregation of primary or linked resources data. 
+This section standardises aggregating primary or linked resources data. 
 
 ### Quick Example 
 ```
@@ -68,6 +68,6 @@ This section standardises the aggregation of primary or linked resources data.
 ```
 
 
-The aggregation syntax may be combined with primary or [linked resource filters](#Linked-Resource-Filters), and is also fully interoperable with JSON API  [inclusion](http://jsonapi.org/format/#fetching-includes) and  [sparse fieldsets](http://jsonapi.org/format/#fetching-sparse-fieldsets) features. 
+The aggregation features may be combined with primary or [linked resource filters](#linked-resource-filters), and is also fully interoperable with JSON API  [inclusion](http://jsonapi.org/format/#fetching-includes) and  [sparse fieldsets](http://jsonapi.org/format/#fetching-sparse-fieldsets) features. 
                     
 
