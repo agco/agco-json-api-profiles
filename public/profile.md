@@ -1,16 +1,16 @@
 #JSON API Search Profile
-** Linked Resource Filtering and Multi-Level Aggregations **
+** Linked Resource Filters and Multi-Level Aggregations **
 
 The data model below represents a (simplified) view of a Dealer API domain and will be used throughout the document to further explain the concepts in this profile
 
 ![Dealer data model](https://raw.githubusercontent.com/agco-adm/json-api-search-profile/master/public/search-example-dealer-api.png)
 
-## Linked Resource Filtering
-JSON API standardises filtering on the [primary resource](http://jsonapi.org/format/#fetching-filtering). 
+## Linked Resource Filters
+The JSON API spec standardises filtering on the [primary resource](http://jsonapi.org/format/#fetching-filtering). 
 ``` 
 /dealers?zip=10007 
 ```
-This profile adds the ability to apply filters on attributes of [linked resources](http://jsonapi.org/format/#document-structure-resource-relationships)
+This profile standardizes applying filters on attributes of [linked resources](http://jsonapi.org/format/#document-structure-resource-relationships)
 
 ### Examples
 
@@ -40,3 +40,33 @@ This profile adds the ability to apply filters on attributes of [linked resource
   
 
 ## Multi-Level Aggregations
+This section standardises the aggregation of primary or linked resources data. 
+
+### Quick Example 
+```
+/dealers?aggregations=zip_agg&zip_agg.type=terms&zip_agg.field=zip
+```
+
+```javascript
+//...
+"meta": {
+    "aggregations": {
+      "zip_agg": [
+        {
+          "key": "10005",
+          "count": 573
+        },
+        {
+          "key": "10010",
+          "count": 299
+        }
+        //... more results
+      ]
+    }
+  }
+//... ```
+
+
+The aggregation syntax may be combined with primary or [linked resource filters](#Linked-Resource-Filters), and is also fully interoperable with JSON API  [inclusion](http://jsonapi.org/format/#fetching-includes) and  [sparse fieldsets](http://jsonapi.org/format/#fetching-sparse-fieldsets) features. 
+                    
+
