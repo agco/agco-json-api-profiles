@@ -239,6 +239,7 @@ Bucket aggregations can also be nested whithin other Bucket aggregations.
     }
 }
 ```
+
 ### Interop 
 
 The aggregation features may be combined with primary or [linked resource filters](#linked-resource-filters).
@@ -247,8 +248,9 @@ The aggregation features may be combined with primary or [linked resource filter
 ```
 [inclusion](http://jsonapi.org/format/#fetching-includes) and  [sparse fieldsets](http://jsonapi.org/format/#fetching-sparse-fieldsets) can be applied as well on top of the top_hits aggregation.
 
+Here is an elaboration of a previous example  ( Get 5 most recent founded dealerships per zip code ) :
 ```
-/dealers/search?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.attribute=zip&zip_agg.aggregations=mostrecent_agg&mostrecent_agg.type=top_hits&mostrecent_agg.sort=-dealer_misc.founded_date&&mostrecent_agg.size=5&mostrecent.include=current_contracts,current_contracts.brand&mostrecent.fields=id,code,name
+...&mostrecent.include=current_contracts,current_contracts.brand&mostrecent.fields=id,code,name
 ```
 
 ### Aggregation types
