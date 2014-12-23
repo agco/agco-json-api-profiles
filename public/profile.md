@@ -140,55 +140,56 @@ Metrics aggregations can be nested whithin Bucket aggregations so they execute w
 ```
 #### Nesting - Buckets within Buckets
 Bucket aggregations can also be nested whithin other Bucket aggregations.
-```
-/dealers/search?aggregations=brand_agg&brand_agg.type=terms&brand_agg.attribute=current_contracts.brand.code&brand_agg.aggregations=product_type_agg&product_type_agg.type=terms&product_type_agg.attribute=current_contracts.product_type.code&product_type_agg.aggregations=zip_agg&zip_agg.type=terms&zip_agg.attribute=zip
-```
-```javascript
-// ...
-"meta": {
-    "aggregations": {
-        "brand_agg": [
-            {
-                "key": "MF",
-                "count": 256,
-                "product_type_agg": [
-                    {
-                        "key": "PAS",
-                        "count": 307,
-                        "zip_agg": [
-                            {
-                                "key": "14530",
-                                "count": 1
-                            },
-                            {
-                                "key": "17268",
-                                "count": 1
-                            }
-                            // ... more results
-                        ]
-                    },
-                    {
-                        "key": "HAY",
-                        "count": 105,
-                        "zip_agg": [
-                            {
-                                "key": "14530",
-                                "count": 1
-                            },
-                            {
-                                "key": "17268",
-                                "count": 1
-                            }
-                            // more results
-                        ]
-                    }
-                ]
-            }
-        ]
-    }
-}
-```
 
+- Group dealers by brand, product_type, zip   
+  ```
+  /dealers/search?aggregations=brand_agg&brand_agg.type=terms&brand_agg.attribute=current_contracts.brand.code&brand_agg.aggregations=product_type_agg&product_type_agg.type=terms&product_type_agg.attribute=current_contracts.product_type.code&product_type_agg.aggregations=zip_agg&zip_agg.type=terms&zip_agg.attribute=zip
+  ```
+  ```javascript
+    // ...
+    "meta": {
+        "aggregations": {
+            "brand_agg": [
+                {
+                    "key": "MF",
+                    "count": 256,
+                    "product_type_agg": [
+                        {
+                            "key": "PAS",
+                            "count": 307,
+                            "zip_agg": [
+                                {
+                                    "key": "14530",
+                                    "count": 1
+                                },
+                                {
+                                    "key": "17268",
+                                    "count": 1
+                                }
+                                // ... more results
+                            ]
+                        },
+                        {
+                            "key": "HAY",
+                            "count": 105,
+                            "zip_agg": [
+                                {
+                                    "key": "14530",
+                                    "count": 1
+                                },
+                                {
+                                    "key": "17268",
+                                    "count": 1
+                                }
+                                // more results
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+  ```
 
 
 ##### Syntax
