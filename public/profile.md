@@ -6,13 +6,11 @@ The data model below represents a (simplified) view of a Dealer API domain and w
 ![Dealer data model](https://raw.githubusercontent.com/agco-adm/json-api-search-profile/master/public/search-example-dealer-api.png)
 
 ## Linked Resource Filters
-The JSON API spec standardises filtering on the [primary resource](http://jsonapi.org/format/#fetching-filtering). 
+The JSON API spec standardises filtering on attributes of the [primary resource](http://jsonapi.org/format/#fetching-filtering). 
 ``` 
 /dealers?zip=10007 
 ```
-This section of the profile standardizes applying filters on attributes of [linked resources](http://jsonapi.org/format/#document-structure-resource-relationships)
-
-### Examples
+This profile standardises filtering on attributes of the [linked resources](http://jsonapi.org/format/#document-structure-resource-relationships)
 
 - Filter a linked resource   
   ```
@@ -42,8 +40,8 @@ This section of the profile standardizes applying filters on attributes of [link
 ## Aggregations
 This section standardises aggregating data from primary and/or linked resources. 
 
-- Get count of dealers per zip code 
 ```
+# Get count of dealers per zip code 
 /dealers/search?aggregations=zip_agg&zip_agg.type=terms&zip_agg.attribute=zip
 ```
 ```javascript
@@ -65,20 +63,21 @@ This section standardises aggregating data from primary and/or linked resources.
   }
 //... 
 ```
+
 The URL query parameter 'aggregations' denotes the aggregation.  
-It can contain a single or comma seperated list of values, which are essentially labels. 
+It contains a single or comma seperated list of values which label the aggregations. 
 
 Each label has an attribute which indicates the 'type' of aggregation. Depending on the value provided (e.g. terms, stats, top_hits) other attributes can be set.
 
-The 'aggregations' output is inserted into the 'meta' portion of the response, the keys ( e.g. zip_agg ) correlate with the labels set as part of the request URL.
+The aggregations output is inserted into the 'meta' portion of the response, the keys ( e.g. zip_agg ) correlate with the labels set as part of the request URL.
 
-### Aggregation families
-The various aggregation types can be divided into 2 families
+### Aggregation Categories
+The various aggregation types can be divided into 2 categories
 #### Metrics
 These aggregations return value(s) derived from the documents returned by the your query.
 
-- Compute statistics (min/max/avg/sum/count) on the number_of_employees 
 ```
+# Compute statistics (min/max/avg/sum/count) on the number_of_employees 
 /dealers/search?aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.field=dealer_misc.number_of_employees
 ```
 ```javascript
@@ -97,9 +96,10 @@ These aggregations return value(s) derived from the documents returned by the yo
 ```
 
 #### Buckets
-The terms aggregation is a bucketing aggregation.  
 
 Bucket aggregations define criteria for ‘buckets’ (think of them as ‘groups’) and documents 'fall' into relevant buckets. A bucket therefore contains a document set
+
+The example ( Get count of dealers per zip code ) at the start of the [Aggregations section](#aggregations) uses a terms aggregation, which is a common type of bucket aggregation. 
 
 ##### Nesting
 ```
@@ -110,8 +110,8 @@ Each label may specify an additional .aggregations attribute, this may contain a
 ###### Metrics - Buckets
 Metrics aggregations can be nested within Bucket aggregations in order to have them executed in the context of that bucket. 
 
-- Compute statistics (min/max/avg/sum/count) on the number_of_employees per zip code
 ```
+# Compute statistics (min/max/avg/sum/count) on the number_of_employees per zip code
 /dealers/search?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.attribute=zip&zip_agg.aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.attribute=dealer_misc.number_of_employees
 ```
 ```javascript
@@ -147,8 +147,9 @@ Metrics aggregations can be nested within Bucket aggregations in order to have t
   }
 //...
 ```
-- Get 5 most recent founded dealerships per zip code
+
 ```
+# Get 5 most recent founded dealerships per zip code
 /dealers/search?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.attribute=zip&zip_agg.aggregations=mostrecent_agg&mostrecent_agg.type=top_hits&mostrecent_agg.sort=-dealer_misc.founded_date&&mostrecent_agg.size=5
 ```
 ```javascript
@@ -185,13 +186,11 @@ Metrics aggregations can be nested within Bucket aggregations in order to have t
   }
 //...
 ```
-
-
 ###### Buckets - Buckets
 Bucket aggregations can also be nested whithin other Bucket aggregations.
 
-- Get count of dealers per brand / product_type / zip
 ```
+# Get count of dealers per brand / product_type / zip
 /dealers/search?aggregations=brand_agg&brand_agg.type=terms&brand_agg.attribute=current_contracts.brand.code&brand_agg.aggregations=product_type_agg&product_type_agg.type=terms&product_type_agg.attribute=current_contracts.product_type.code&product_type_agg.aggregations=zip_agg&zip_agg.type=terms&zip_agg.attribute=zip
 ```
 ```javascript  
