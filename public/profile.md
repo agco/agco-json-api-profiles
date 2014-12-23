@@ -10,7 +10,7 @@ JSON API standardises filtering on the [primary resource](http://jsonapi.org/for
 ``` 
 /dealers?zip=10007 
 ```
-** This profile adds the ability to apply filters on multiple linked resources **
+**This profile adds the ability to apply filters on multiple linked resources**
 
 ### Examples
 
