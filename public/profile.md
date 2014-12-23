@@ -42,7 +42,7 @@ This section standardises aggregating data from primary and/or linked resources.
 
 ```
 # Get count of dealers per zip code 
-/dealers/search?aggregations=zip_agg&zip_agg.type=terms&zip_agg.attribute=zip
+/dealers/search?aggregations=zip_agg&zip_agg.type=terms&zip_agg.property=zip
 ```
 ```javascript
 //...
@@ -112,7 +112,7 @@ Metrics aggregations can be nested within Bucket aggregations, this makes them e
 
 ```
 # Compute statistics (min/max/avg/sum/count) on the number_of_employees per zip code
-/dealers/search?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.attribute=zip&zip_agg.aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.attribute=dealer_misc.number_of_employees
+/dealers/search?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.property=zip&zip_agg.aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.property=dealer_misc.number_of_employees
 ```
 ```javascript
 //...
@@ -150,7 +150,7 @@ Metrics aggregations can be nested within Bucket aggregations, this makes them e
 
 ```
 # Get 5 most recent founded dealerships per zip code
-/dealers/search?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.attribute=zip&zip_agg.aggregations=mostrecent_agg&mostrecent_agg.type=top_hits&mostrecent_agg.sort=-dealer_misc.founded_date&&mostrecent_agg.size=5
+/dealers/search?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.property=zip&zip_agg.aggregations=mostrecent_agg&mostrecent_agg.type=top_hits&mostrecent_agg.sort=-dealer_misc.founded_date&&mostrecent_agg.size=5
 ```
 ```javascript
 //...
@@ -191,7 +191,7 @@ Bucket aggregations can also be nested within other Bucket aggregations.
 
 ```
 # Get count of dealers per brand / product_type / zip
-/dealers/search?aggregations=brand_agg&brand_agg.type=terms&brand_agg.attribute=current_contracts.brand.code&brand_agg.aggregations=product_type_agg&product_type_agg.type=terms&product_type_agg.attribute=current_contracts.product_type.code&product_type_agg.aggregations=zip_agg&zip_agg.type=terms&zip_agg.attribute=zip
+/dealers/search?aggregations=brand_agg&brand_agg.type=terms&brand_agg.property=current_contracts.brand.code&brand_agg.aggregations=product_type_agg&product_type_agg.type=terms&product_type_agg.property=current_contracts.product_type.code&product_type_agg.aggregations=zip_agg&zip_agg.type=terms&zip_agg.property=zip
 ```
 ```javascript  
 // ...
