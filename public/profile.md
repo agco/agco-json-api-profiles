@@ -41,7 +41,8 @@ This section of the profile standardizes applying filters on attributes of [link
 
 ## Aggregations
 This section standardises aggregating data from primary and/or linked resources. 
-#### Quick Example
+
+- Get count of dealers per zip code 
 ```
 /dealers/search?aggregations=zip_agg&zip_agg.type=terms&zip_agg.attribute=zip
 ```
@@ -64,7 +65,6 @@ This section standardises aggregating data from primary and/or linked resources.
   }
 //... 
 ```
-### Syntax
 The URL query parameter 'aggregations' denotes the aggregation.  
 It can contain a single or comma seperated list of values, which are essentially labels. 
 
@@ -72,13 +72,14 @@ Each label has an attribute which indicates the 'type' of aggregation. Depending
 
 The 'aggregations' output is inserted into the 'meta' portion of the response, the keys ( e.g. zip_agg ) correlate with the labels set as part of the request URL.
 
-### Buckets and Metrics
-The various aggregation types can be divided into 2 categories
+### Aggregation families
+The various aggregation types can be divided into 2 families
 #### Metrics
 These aggregations compute metrics over a set of documents
 
+- Compute statistics (min/max/avg/sum/count) on the number_of_employees 
 ```
-/dealers/search?aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.field=links.dealer_misc.number_of_employees
+/dealers/search?aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.field=dealer_misc.number_of_employees
 ```
 ```javascript
 "meta": {
@@ -96,16 +97,22 @@ These aggregations compute metrics over a set of documents
 ```
 
 #### Buckets
-The 'Quick Example' terms aggregation is a bucketing aggregation.  
+The terms aggregation is a bucketing aggregation.  
 
-When the aggregation is executed the specified 'attribute' value is evaluated whether it matches the bucket criteria. If a match, the document is placed inside the bucket and the aggregation continues. 
+When the aggregation is executed the specified 'attribute' value is evaluated to whether it matches the bucket criteria. If a match, the document is placed inside the bucket and the aggregation continues. 
 
-#### Nesting - Metrics within Buckets
+##### Nesting
+```
+/dealers/search?aggregations=zip_agg&...&zip_agg.aggregations=emp_stats_agg...
+```
+Each label may specify an additional .aggregations attribute, this may contain a single or comma seperated list of additional nested aggregation labels. 
+
+###### Metrics - Buckets
 Metrics aggregations can be nested within Bucket aggregations in order to have them executed in the context of that bucket. 
 
 - Compute statistics (min/max/avg/sum/count) on the number_of_employees per zip code
 ```
-/dealers/search?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.attribute=zip&zip_agg.aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.attribute=links.dealer_misc.number_of_employees
+/dealers/search?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.attribute=zip&zip_agg.aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.attribute=dealer_misc.number_of_employees
 ```
 ```javascript
 //...
@@ -115,7 +122,7 @@ Metrics aggregations can be nested within Bucket aggregations in order to have t
             {
                 "key": "10005",
                 "count": 573,
-                "emp_stats_ag": {
+                "emp_stats_agg": {
                     "count": 573,
                     "min": 94,
                     "max": 563,
@@ -126,7 +133,7 @@ Metrics aggregations can be nested within Bucket aggregations in order to have t
             {
                 "key": "10010",
                 "count": 299,
-                "emp_stats_ag": {
+                "emp_stats_agg": {
                     "count": 299,
                     "min": 60,
                     "max": 221,
@@ -140,10 +147,50 @@ Metrics aggregations can be nested within Bucket aggregations in order to have t
   }
 //...
 ```
-#### Nesting - Buckets within Buckets
+- Get 5 most recent founded dealerships per zip code
+```
+/dealers/search?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.attribute=zip&zip_agg.aggregations=mostrecent_agg&mostrecent_agg.type=top_hits&mostrecent_agg.sort=-dealer_misc.founded_date&&mostrecent_agg.size=5
+```
+```javascript
+//...
+"meta": {
+    "aggregations": {
+        "zip_agg": [
+            {
+                "key": "10005",
+                "count": 573,
+                "mostrecent_agg": [
+                {
+                        "id": "546e0bc761b40f0200b48100",
+                        "code": "328304"
+                        // ...
+                        "links":{
+                            //...
+                        }
+                    },
+                    {
+                        "id": "5466de4061b40f0200b77889",
+                        "code": "327400"
+                        // ...
+                        "links":{
+                            //...
+                        }
+                    }
+                    // ...
+                ]
+            }
+            //... more results
+        ]
+    }
+  }
+//...
+```
+
+
+###### Buckets - Buckets
 Bucket aggregations can also be nested whithin other Bucket aggregations.
 
-- Compute count of dealers per brand / product_type / zip
+- Get count of dealers per brand / product_type / zip
 ```
 /dealers/search?aggregations=brand_agg&brand_agg.type=terms&brand_agg.attribute=current_contracts.brand.code&brand_agg.aggregations=product_type_agg&product_type_agg.type=terms&product_type_agg.attribute=current_contracts.product_type.code&product_type_agg.aggregations=zip_agg&zip_agg.type=terms&zip_agg.attribute=zip
 ```
@@ -192,13 +239,19 @@ Bucket aggregations can also be nested whithin other Bucket aggregations.
     }
 }
 ```
+### Interop 
 
-##### Syntax
-Each label may specify an additional .aggregations attribute, this may contain a single or comma seperated list of additional aggregation labels. In turn each label specifies the 'type' of aggregation   
+The aggregation features may be combined with primary or [linked resource filters](#linked-resource-filters).
+```
+/dealers/search?current_contracts.brand.code=MF&aggregations=...
+```
+[inclusion](http://jsonapi.org/format/#fetching-includes) and  [sparse fieldsets](http://jsonapi.org/format/#fetching-sparse-fieldsets) can be applied as well on top of the top_hits aggregation.
 
-The aggregation features may be combined with primary or [linked resource filters](#linked-resource-filters)
+```
+/dealers/search?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.attribute=zip&zip_agg.aggregations=mostrecent_agg&mostrecent_agg.type=top_hits&mostrecent_agg.sort=-dealer_misc.founded_date&&mostrecent_agg.size=5&mostrecent.include=current_contracts,current_contracts.brand&mostrecent.fields=id,code,name
+```
 
+### Aggregation types
 
-, and is also fully interoperable with JSON API  [inclusion](http://jsonapi.org/format/#fetching-includes) and  [sparse fieldsets](http://jsonapi.org/format/#fetching-sparse-fieldsets) features. 
                     
 
