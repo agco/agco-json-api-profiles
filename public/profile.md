@@ -141,9 +141,9 @@ Metrics aggregations can be nested whithin Bucket aggregations so they execute w
 #### Nesting - Buckets within Buckets
 Bucket aggregations can also be nested whithin other Bucket aggregations.
 
-- Group dealers by brand, product_type, zip   
+- Group dealers by brand, product_type, zip  
   ```
-  /dealers/search?aggregations=brand_agg&brand_agg.type=terms&brand_agg.attribute=current_contracts.brand.code&brand_agg.aggregations=product_type_agg&product_type_agg.type=terms&product_type_agg.attribute=current_contracts.product_type.code&product_type_agg.aggregations=zip_agg&zip_agg.type=terms&zip_agg.attribute=zip
+/dealers/search?aggregations=brand_agg&brand_agg.type=terms&brand_agg.attribute=current_contracts.brand.code&brand_agg.aggregations=product_type_agg&product_type_agg.type=terms&product_type_agg.attribute=current_contracts.product_type.code&product_type_agg.aggregations=zip_agg&zip_agg.type=terms&zip_agg.attribute=zip
   ```
 
 ##### Syntax
