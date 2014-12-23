@@ -23,7 +23,7 @@ GET http://api.example.com/dealers/search
 
 ## Stack
 
-- Nodejs : [elastic-fortune](https://github.com/agco-adm/elastic-fortune) // todo rename and add documentation
+- Nodejs : [elastic-fortune](https://github.com/agco-adm/elastic-fortune)
 
 
 
