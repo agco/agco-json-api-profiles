@@ -1,9 +1,11 @@
 # JSON API Search Profile
 
-This repository contains a JSON API [extension spec](http://jsonapi.org/extending/),
-which standardises search features such as Linked Resource Filtering and Aggregations.
+## Profile
 
-Add a profile link relation in the 'meta' section of the response to allow the API consumer to learn about the additional semantics :
+This repository contains a JSON API [extension spec](http://jsonapi.org/extending/),
+which standardises search features such as [Linked Resource Filtering and Aggregations](./public/profile.md).
+
+Add a profile link relation in the 'meta' section of the response to allow the API consumer to learn about the additional semantics
 ```
 GET http://api.example.com/dealers/search
 ```
