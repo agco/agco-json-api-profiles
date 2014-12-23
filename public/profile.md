@@ -1,5 +1,5 @@
 #JSON API Search Profile
-** Linked Resource Filters and Multi-Level Aggregations **
+** Linked Resource Filters and Aggregations **
 
 The data model below represents a (simplified) view of a Dealer API domain and will be used throughout the document to further explain the concepts in this profile
 
@@ -10,41 +10,40 @@ The JSON API spec standardises filtering on the [primary resource](http://jsonap
 ``` 
 /dealers?zip=10007 
 ```
-This section standardizes applying filters on attributes of [linked resources](http://jsonapi.org/format/#document-structure-resource-relationships)
+This section of the profile standardizes applying filters on attributes of [linked resources](http://jsonapi.org/format/#document-structure-resource-relationships)
 
 ### Examples
 
 - Filter a linked resource   
   ```
   # Fetch all dealers located in the state of NY  
-  /dealers?state_province.code=US-NY
+  /dealers/search?state_province.code=US-NY
   ```
 
 - Combine with a primary resource filter   
   ```
   # Fetch all dealers with a zip code of 10005 and an 'MFP' contract code
-  /dealers?zip=10005&current_contracts.code=MFP
+  /dealers/search?zip=10005&current_contracts.code=MFP
   ```
   
 - Filter a linked resource 2 levels deep : current_contracts -> brand  
   ``` 
   # Fetch all dealers which have a contractual agreement to sell 'MF'   equipment  
-  /dealers?zip=10005&current_contracts.brand.code=MF
+  /dealers/search?zip=10005&current_contracts.brand.code=MF
   ```
   
 - Filter multiple linked resources in one go  
   ```
   # Fetch all dealers located in the state of NY and have a contract agreement to sell 'MF' equipment  
-  http://example.com/dealers?state_province.code=US-NY&current_contracts.brand.code=MF
+  /dealers/search?state_province.code=US-NY&current_contracts.brand.code=MF
   ```
   
 
-## Multi-Level Aggregations
+## Aggregations
 This section standardises aggregating data from primary and/or linked resources. 
-
-### Quick Example 
+#### Quick Example
 ```
-/dealers?aggregations=zip_agg&zip_agg.type=terms&zip_agg.attribute=zip
+/dealers/search?aggregations=zip_agg&zip_agg.type=terms&zip_agg.attribute=zip
 ```
 ```javascript
 //...
@@ -76,10 +75,10 @@ The 'aggregations' output is inserted into the 'meta' portion of the response, t
 ### Buckets and Metrics
 The various aggregation types can be divided into 2 categories
 #### Metrics
-Simply put, Metrics aggregations compute metrics over a set of documents
-##### Quick Example  
+These aggregations compute metrics over a set of documents
+
 ```
-/dealers?aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.field=links.dealer_misc.number_of_employees
+/dealers/search?aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.field=links.dealer_misc.number_of_employees
 ```
 ```javascript
 "meta": {
@@ -104,7 +103,7 @@ When the aggregation is executed the specified 'attribute' value is evaluated wh
 #### Nesting - Metrics within Buckets
 Metrics aggregations can be nested whithin Bucket aggregations so they execute within the context of that bucket.   
 ```
-/dealers?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.attribute=zip&zip_agg.aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.attribute=links.dealer_misc.number_of_employees
+/dealers/search?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.attribute=zip&zip_agg.aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.attribute=links.dealer_misc.number_of_employees
 ```
 ```javascript
 //...
@@ -141,8 +140,54 @@ Metrics aggregations can be nested whithin Bucket aggregations so they execute w
 ```
 #### Nesting - Buckets within Buckets
 Bucket aggregations can also be nested whithin other Bucket aggregations.
-
-
+```
+/dealers/search?aggregations=brand_agg&brand_agg.type=terms&brand_agg.attribute=current_contracts.brand.code&brand_agg.aggregations=product_type_agg&product_type_agg.type=terms&product_type_agg.attribute=current_contracts.product_type.code&product_type_agg.aggregations=zip_agg&zip_agg.type=terms&zip_agg.attribute=zip
+```
+```javascript
+// ...
+"meta": {
+    "aggregations": {
+        "brand_agg": [
+            {
+                "key": "MF",
+                "count": 256,
+                "product_type_agg": [
+                    {
+                        "key": "PAS",
+                        "count": 307,
+                        "zip_agg": [
+                            {
+                                "key": "14530",
+                                "count": 1
+                            },
+                            {
+                                "key": "17268",
+                                "count": 1
+                            }
+                            // ... more results
+                        ]
+                    },
+                    {
+                        "key": "HAY",
+                        "count": 105,
+                        "zip_agg": [
+                            {
+                                "key": "14530",
+                                "count": 1
+                            },
+                            {
+                                "key": "17268",
+                                "count": 1
+                            }
+                            // more results
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
+```
 
 
 
