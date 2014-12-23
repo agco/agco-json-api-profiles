@@ -14,8 +14,8 @@ This profile adds the ability to apply filters on multiple linked resources
 
 ### Examples
 - Filter on a linked resource  
-  Fetch all dealers located in the state of NY  
   ```
+  # Fetch all dealers located in the state of NY  
   /dealers?state_province.code=US-NY
   ```
 - Combine with a regular resource filter   
@@ -26,13 +26,13 @@ This profile adds the ability to apply filters on multiple linked resources
   
 - Filter on a linked resource 2 levels deep : current_contracts -> brand  
   ``` 
-  # Fetch all dealers which have a contractual agreement to sell MF   equipment  
+  # Fetch all dealers which have a contractual agreement to sell 'MF'   equipment  
   /dealers?zip=10005&current_contracts.brand.code=MF
   ```
   
 - Filter on multiple linked resource filters at once  
   ```
-  # Fetch all dealers located in the state of NY and have a contract agreement to sell MF equipment  
+  # Fetch all dealers located in the state of NY and have a contract agreement to sell 'MF' equipment  
   http://example.com/dealers?state_province.code=US-NY&current_contracts.brand.code=MF
   ```
   
