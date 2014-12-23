@@ -10,7 +10,7 @@ The JSON API spec standardises filtering on the [primary resource](http://jsonap
 ``` 
 /dealers?zip=10007 
 ```
-This profile standardizes applying filters on attributes of [linked resources](http://jsonapi.org/format/#document-structure-resource-relationships)
+This section standardizes applying filters on attributes of [linked resources](http://jsonapi.org/format/#document-structure-resource-relationships)
 
 ### Examples
 
@@ -40,7 +40,7 @@ This profile standardizes applying filters on attributes of [linked resources](h
   
 
 ## Multi-Level Aggregations
-This section standardises aggregating primary or linked resources data. 
+This section standardises aggregating data from primary and/or linked resources. 
 
 ### Quick Example 
 ```
