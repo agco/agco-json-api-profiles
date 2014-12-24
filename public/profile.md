@@ -65,7 +65,7 @@ This section standardises aggregating data from primary and/or linked resources.
 ```
 
 The URL query parameter 'aggregations' denotes the aggregation.  
-It contains a single or comma seperated list of values which label the aggregations. 
+It contains a single or comma separated list of values which label the aggregations. 
 
 Each label has an attribute which indicates the 'type' of aggregation. Depending on the value provided (e.g. terms, stats, top_hits) other attributes can be set.
 
@@ -105,7 +105,7 @@ The example ( Get count of dealers per zip code ) at the start of the [Aggregati
 ```
 /dealers/search?aggregations=zip_agg&...&zip_agg.aggregations=emp_stats_agg...
 ```
-Each label referring to a a bucket aggregation may specify an additional .aggregations attribute, this may contain a single or comma seperated list of additional nested aggregation labels. 
+Each label referring to a a bucket aggregation may specify an additional .aggregations attribute, this may contain a single or comma separated list of additional nested aggregation labels. 
 
 ###### Metrics - Buckets
 Metrics aggregations can be nested within Bucket aggregations, this makes them execute in the context of that bucket. 
