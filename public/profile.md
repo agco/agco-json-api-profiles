@@ -276,6 +276,10 @@ The Elasticsearch top_hits aggregation accepts an 'include' parameter, this is e
 ```
 ?...mostrecent_agg.fields=id,code,name
 ```
+The Elasticsearch top_hits aggregation also accepts a 'size' parameter, this is expected as a 'limit' attribute on the aggregation label.
+```
+?...mostrecent_agg.limit=1
+```
 
 ### Elasticsearch lock-in
 
