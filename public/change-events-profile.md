@@ -1,112 +1,115 @@
 # AGCO JSON-API Change Events Profile
 
+This json api extension profile describes how change events can be accessed for a given resource
 
-```
-/canAlerts
-```
+Let's assume the following data is inserted at the /equipment resource :
+
 ```javascript
 {
-    "trackingData": [
+    "equipment": [
         {
-            "id": "54cb8f423db5e80300afbe33",
-            "raw": 69,
-            "rawUnit": "%",
-            "imp": 69,
-            "met": 69,
-            "metUnit": "%",
+            "id": "54ef5abec52a0203000bef23",
+            "description": "EMS-wb226a 2015-02-26T11:41:17-06:00",
+            "serialNumber": "wb226a-00001",
+            "vin": "15099-5493",
+            "warranty": "0058959619",
+            "year": "2015",
             "links": {
-                "trackingPoint": "53b18b5205904f3e687be511",
-                "canVariable": "54b80db395bc95bb604b351b"
+                "product": "54ef5abd127e4c030093aacc",
+                "tracker": "54ef5abe2fe70f0300727643"
             }
         },
         {
-            "id": "54cb8f423db5e80300afbe32",
-            "raw": 2986,
-            "rawUnit": "m/s",
-            "imp": 6.65878,
-            "impUnit": "f/s",
-            "met": 10.7496,
-            "metUnit": "m/s",
+            "id": "54ed5a1dfa8319030031ea87",
+            "description": "Topcon End-To-End Test (5494) 2015-02-24T23:14:06-06:00",
+            "serialNumber": "1223-09000226",
+            "vin": "15099-5494",
+            "warranty": "0086274666",
+            "year": "2015",
             "links": {
-                "trackingPoint": "53b18b5205904f3e687be510",
-                "canVariable": "54b80db395bc95bb604b347d"
+                "product": "54ed5a1d0a7f2c0300da74af",
+                "owner": "54e78c73fa245a0300746323",
+                "tracker": "54ed5a1dfa8319030031ea88"
             }
-        }//,... more trackingData
+        }
     ]
 }
-
 ```
 
-## Poll changes
+## Request changes
 
-/canAlerts/changes
+Change events can be retrieved with a simple REST call using the /changes suffix
 
+```
+/equipment/changes
+```
 ```javascript
 {
-    "trackingData_changes": [
+    "equipment_changes": [
         {
-            "event": "trackingData_insert",
+            "event": "equipment_insert",
             "id": "6113607438701690883",
             "data": {
-                "id": "54cb8f423db5e80300afbe33",
-                "raw": 69,
-                "rawUnit": "%",
-                "imp": 69,
-                "met": 69,
-                "metUnit": "%",
+                "id": "54ef5abec52a0203000bef23",
+                "description": "EMS-wb226a 2015-02-26T11:41:17-06:00",
+                "serialNumber": "wb226a-00001",
+                "vin": "15099-5493",
+                "warranty": "0058959619",
+                "year": "2015",
                 "links": {
-                    "trackingPoint": "53b18b5205904f3e687be511",
-                    "canVariable": "54b80db395bc95bb604b351b"
+                    "product": "54ef5abd127e4c030093aacc",
+                    "tracker": "54ef5abe2fe70f0300727643"
                 }
             }
         },
         {
-            "event": "trackingData_insert",
+            "event": "equipment_insert",
             "id": "6113607438701690884",
             "data": {
-                "id": "54cb8f423db5e80300afbe32",
-                "raw": 2986,
-                "rawUnit": "m/s",
-                "imp": 6.65878,
-                "impUnit": "f/s",
-                "met": 10.7496,
-                "metUnit": "m/s",
+                "id": "54ed5a1dfa8319030031ea87",
+                "description": "Topcon End-To-End Test (5494) 2015-02-24T23:14:06-06:00",
+                "serialNumber": "1223-09000226",
+                "vin": "15099-5494",
+                "warranty": "0086274666",
+                "year": "2015",
                 "links": {
-                    "trackingPoint": "53b18b5205904f3e687be510",
-                    "canVariable": "54b80db395bc95bb604b347d"
+                    "product": "54ed5a1d0a7f2c0300da74af",
+                    "owner": "54e78c73fa245a0300746323",
+                    "tracker": "54ed5a1dfa8319030031ea88"
                 }
             }
-        }//,... more trackingData change events
+        }
     ]
-}
-```
+}```
 
 ### Paging
 
+Paging should be supported
+
 ```
-/canAlerts/changes?seq=ge=6113607438701690884&limit=20
+/equipment/changes?seq=ge=6113607438701690884&limit=1
 ```
 
 ```javascript
 {
-    "trackingData_changes": [
+    "equipment_changes": [
         {
-            "event": "trackingData_insert",
+            "event": "equipment_insert",
             "id": "6113607438701690884",
             "data": {
-                "id": "54cb8f423db5e80300afbe32",
-                "raw": 2986,
-                "rawUnit": "m/s",
-                "imp": 6.65878,
-                "impUnit": "f/s",
-                "met": 10.7496,
-                "metUnit": "m/s",
+                "id": "54ed5a1dfa8319030031ea87",
+                "description": "Topcon End-To-End Test (5494) 2015-02-24T23:14:06-06:00",
+                "serialNumber": "1223-09000226",
+                "vin": "15099-5494",
+                "warranty": "0086274666",
+                "year": "2015",
                 "links": {
-                    "trackingPoint": "53b18b5205904f3e687be510",
-                    "canVariable": "54b80db395bc95bb604b347d"
+                    "product": "54ed5a1d0a7f2c0300da74af",
+                    "owner": "54e78c73fa245a0300746323",
+                    "tracker": "54ed5a1dfa8319030031ea88"
                 }
             }
-        }//,... more trackingData change events
+        }
     ]
 }
 ```
@@ -115,33 +118,38 @@
 
 ## Stream changes
 
+In order to reduce network overhead and associated latency, the change events can be streamed across as well
 
-[server sent events](http://www.w3.org/TR/2009/WD-eventsource-20091029/)
-standardises event streaming across plain HTTP/1.1, which makes it more proxy friendly than websockets
-and in addition supports automatic reconnection and transmission of arbitrary events
+This extension spec builds on the [server sent events](http://www.w3.org/TR/2009/WD-eventsource-20091029/),
+which standardises event streaming across plain HTTP/1.1
 
+The fact that it's leveraging pure HTTP makes it more proxy friendly than websockets,
+in addition to that it also supports automatic reconnection and transmission of arbitrary events
+
+
+As demonstrated below, it's sufficient to append a /stream suffix to get back a stream of data
 
 ```
-/canAlerts/changes/stream
+/equipment/changes/stream
 ```
 ```
-"event": "trackingData_insert",
+"event": "equipment_insert",
 "id": "6113607438701690883",
-"data": {"id": "54cb8f423db5e80300afbe33","raw": 69,"rawUnit": "%","imp": 69,"met": 69,"metUnit": "%","links": {"trackingPoint": "53b18b5205904f3e687be511","canVariable": "54b80db395bc95bb604b351b"}}
+"data": {"id": "54ef5abec52a0203000bef23","description": "EMS-wb226a 2015-02-26T11:41:17-06:00","serialNumber": "wb226a-00001","vin": "15099-5493","warranty": "0058959619","year": "2015","links": {"product": "54ef5abd127e4c030093aacc","tracker": "54ef5abe2fe70f0300727643"}}
 
-"event": "trackingData_insert",
+"event": "equipment_insert",
 "id": "6113607438701690884",
-"data": {"id": "54cb8f423db5e80300afbe32","raw": 2986,"rawUnit": "m/s","imp": 6.65878,"impUnit": "f/s","met": 10.7496,"metUnit": "m/s","links": {"trackingPoint": "53b18b5205904f3e687be510","canVariable": "54b80db395bc95bb604b347d"}}
+"data": {"id": "54ed5a1dfa8319030031ea87","description": "Topcon End-To-End Test (5494) 2015-02-24T23:14:06-06:00","serialNumber": "1223-09000226","vin": "15099-5494","warranty": "0086274666","year": "2015","links": {"product": "54ed5a1d0a7f2c0300da74af","owner": "54e78c73fa245a0300746323","tracker": "54ed5a1dfa8319030031ea88"}}
 ```
 
 The [Last Event Id mechanism](http://www.w3.org/TR/2009/WD-eventsource-20091029/#last-event-id) should be supported
-in order to enable resilience on connection breaks and initiating a stream from an arbitrary point in time
+This enables resilience on connection breaks and initiating a stream from an arbitrary point in time
 
 
 ### Consume SSE
 
 ootb server libraries are available on various platforms : e.g. [Node](https://github.com/aslakhellesoy/eventsource-node),
-[Java](https://github.com/aslakhellesoy/eventsource-java)
+[Java](https://github.com/aslakhellesoy/eventsource-java), ...
 
 EventSource is a standard HTML5 element, with [polyfills available](http://html5please.com/#eventSource) for dated browsers
 
