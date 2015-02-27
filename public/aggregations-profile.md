@@ -1,48 +1,10 @@
-#JSON API Search Profile
-**Linked Resource Filters and Aggregations**
+# AGCO JSON-API Aggregations Profile
 
-The data model below represents a (simplified) view of a Dealer API domain and will be used throughout the document to further explain the concepts in this profile
-
-![Dealer data model](https://raw.githubusercontent.com/agco-adm/json-api-search-profile/master/public/search-example-dealer-api.png)
-
-## Linked Resource Filters
-The JSON API spec standardises filtering on attributes of the [primary resource](http://jsonapi.org/format/#fetching-filtering). 
-``` 
-/dealers?zip=10007 
-```
-This profile standardises filtering on attributes of the [linked resources](http://jsonapi.org/format/#document-structure-resource-relationships)
-
-- Filter a linked resource   
-  ```
-  # Fetch all dealers located in the state of NY  
-  /dealers/search?state_province.code=US-NY
-  ```
-
-- Combine with a primary resource filter   
-  ```
-  # Fetch all dealers with a zip code of 10005 and an 'MFP' contract code
-  /dealers/search?zip=10005&current_contracts.code=MFP
-  ```
-  
-- Filter a linked resource 2 levels deep : current_contracts -> brand  
-  ``` 
-  # Fetch all dealers which have a contractual agreement to sell 'MF'   equipment  
-  /dealers/search?zip=10005&current_contracts.brand.code=MF
-  ```
-  
-- Filter multiple linked resources in one go  
-  ```
-  # Fetch all dealers located in the state of NY and have a contract agreement to sell 'MF' equipment  
-  /dealers/search?state_province.code=US-NY&current_contracts.brand.code=MF
-  ```
-  
-
-## Aggregations
-This section standardises aggregating data from primary and/or linked resources. 
+Below is a quick example which showcases an aggregation
 
 ```
 # Get count of dealers per zip code 
-/dealers/search?aggregations=zip_agg&zip_agg.type=terms&zip_agg.property=zip
+/dealers?aggregations=zip_agg&zip_agg.type=terms&zip_agg.property=zip
 ```
 ```javascript
 //...
@@ -71,14 +33,14 @@ Each label has an attribute which indicates the 'type' of aggregation. Depending
 
 The aggregations output is inserted into the 'meta' portion of the response, the keys ( e.g. zip_agg ) correlate with the labels set as part of the request URL.
 
-### Aggregation Categories
+## Aggregation Categories
 The various aggregation types can be divided into 2 categories
-#### Metrics
+### Metrics
 These aggregations return value(s) derived from the documents returned by the your query.
 
 ```
 # Compute statistics (min/max/avg/sum/count) on the number_of_employees 
-/dealers/search?aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.field=dealer_misc.number_of_employees
+/dealers?aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.field=dealer_misc.number_of_employees
 ```
 ```javascript
 "meta": {
@@ -95,24 +57,24 @@ These aggregations return value(s) derived from the documents returned by the yo
 //...
 ```
 
-#### Buckets
+### Buckets
 
 Bucket aggregations define criteria for ‘buckets’ (think of them as ‘groups’) and documents 'fall' into relevant buckets. A bucket therefore contains a document set
 
 The example ( Get count of dealers per zip code ) at the start of the [Aggregations section](#aggregations) uses a terms aggregation, which is a common type of bucket aggregation. 
 
-##### Nesting
+#### Nesting
 ```
-/dealers/search?aggregations=zip_agg&...&zip_agg.aggregations=emp_stats_agg...
+/dealers?aggregations=zip_agg&...&zip_agg.aggregations=emp_stats_agg...
 ```
 Each label referring to a a bucket aggregation may specify an additional .aggregations attribute, this may contain a single or comma separated list of additional nested aggregation labels. 
 
-###### Metrics - Buckets
+##### Metrics - Buckets
 Metrics aggregations can be nested within Bucket aggregations, this makes them execute in the context of that bucket. 
 
 ```
 # Compute statistics (min/max/avg/sum/count) on the number_of_employees per zip code
-/dealers/search?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.property=zip&zip_agg.aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.property=dealer_misc.number_of_employees
+/dealers?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.property=zip&zip_agg.aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.property=dealer_misc.number_of_employees
 ```
 ```javascript
 //...
@@ -150,7 +112,7 @@ Metrics aggregations can be nested within Bucket aggregations, this makes them e
 
 ```
 # Get 5 most recent founded dealerships per zip code
-/dealers/search?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.property=zip&zip_agg.aggregations=mostrecent_agg&mostrecent_agg.type=top_hits&mostrecent_agg.sort=-dealer_misc.founded_date&&mostrecent_agg.size=5
+/dealers?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.property=zip&zip_agg.aggregations=mostrecent_agg&mostrecent_agg.type=top_hits&mostrecent_agg.sort=-dealer_misc.founded_date&&mostrecent_agg.size=5
 ```
 ```javascript
 //...
@@ -186,12 +148,12 @@ Metrics aggregations can be nested within Bucket aggregations, this makes them e
   }
 //...
 ```
-###### Buckets - Buckets
+##### Buckets - Buckets
 Bucket aggregations can also be nested within other Bucket aggregations.
 
 ```
 # Get count of dealers per brand / product_type / zip
-/dealers/search?aggregations=brand_agg&brand_agg.type=terms&brand_agg.property=current_contracts.brand.code&brand_agg.aggregations=product_type_agg&product_type_agg.type=terms&product_type_agg.property=current_contracts.product_type.code&product_type_agg.aggregations=zip_agg&zip_agg.type=terms&zip_agg.property=zip
+/dealers?aggregations=brand_agg&brand_agg.type=terms&brand_agg.property=current_contracts.brand.code&brand_agg.aggregations=product_type_agg&product_type_agg.type=terms&product_type_agg.property=current_contracts.product_type.code&product_type_agg.aggregations=zip_agg&zip_agg.type=terms&zip_agg.property=zip
 ```
 ```javascript  
 // ...
@@ -239,11 +201,11 @@ Bucket aggregations can also be nested within other Bucket aggregations.
 }
 ```
 
-### Features Interop
+## Features Interop
 
 The aggregation features may be combined with primary or [linked resource filters](#linked-resource-filters).
 ```
-/dealers/search?current_contracts.brand.code=MF&aggregations=...
+/dealers?current_contracts.brand.code=MF&aggregations=...
 ```
 [inclusion](http://jsonapi.org/format/#fetching-includes) and  [sparse fieldsets](http://jsonapi.org/format/#fetching-sparse-fieldsets) can be applied as well on top of the top_hits aggregation.
 
@@ -252,7 +214,7 @@ Here is an elaboration of a previous example  ( Get 5 most recent founded dealer
 ...&mostrecent.include=current_contracts,current_contracts.brand&mostrecent.fields=id,code,name
 ```
 
-### Aggregation types
+## Aggregation types
 
 The aggregation types and output format are more or less copied over as-is from Elasticsearch :
 
@@ -262,9 +224,9 @@ The aggregation types and output format are more or less copied over as-is from 
 - Bucketing :
   terms, significant_terms, range, date_range, filter, filters, missing, histogram, date_histogram, geo_distance
 
-Read through the Elasticsearch documentation pages to get a more in-depth understanding on the various aggregation types and the available parameters : http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-aggregations.html.
+Read through the Elasticsearch documentation pages to get a more in-depth understanding on the various aggregation types and the available parameters : http://www.elasticsearch.org/guide/en/elasticsearch/reference/current-aggregations.html.
 
-####  Elasticsearch vs Search Profile 
+###  Elasticsearch vs Search Profile
 
 Some of the paremeters are renamed to remain consistent with the rest of the JSONAPI spec.
 
@@ -281,7 +243,7 @@ The Elasticsearch top_hits aggregation also accepts a 'size' parameter, this is 
 ?...mostrecent_agg.limit=1
 ```
 
-### Elasticsearch lock-in
+## Elasticsearch lock-in
 
 The profile Aggregation GET syntax maps in a generic way to Elasticsearch POST requests, however if another search engine would be used to back the implementation of the profile, it should be possible to re-map the syntax (e.g. SOLR facets / pivots ).
 
