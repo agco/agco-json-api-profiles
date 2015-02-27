@@ -2,17 +2,24 @@
 
 ## Profile
 
-This repository contains a JSON API [extension spec](http://jsonapi.org/extending/),
-which standardises search features such as [Linked Resource Filtering and Aggregations](./public/profile.md).
+This repository contains AGCO's JSON API [extension profiles](http://jsonapi.org/extending/),
+these profiles standardise features such as [Filtering](./public/filtering-profile.md)
+[Aggregations](./public/aggregations-profile.md) and [Change Events](./public/change-events-profile.md).
 
-Add a profile link relation in the 'meta' section of the response to allow the API consumer to learn about the additional semantics
+### Usage
+
+Add the profile link relations in the 'meta' section of the response to allow the API consumer to learn about the additional semantics
 ```
-GET http://api.example.com/dealers/search
+GET http://api.example.com/dealers
 ```
 ``` javascript
 {
   "meta": {
-    "profile": "https://github.com/agco-adm/json-api-search-profile/blob/master/public/profile.md"
+    "profile": [
+        "https://github.com/agco-adm/json-api-search-profile/blob/master/public/filtering-profile.md",
+        "https://github.com/agco-adm/json-api-search-profile/blob/master/public/aggregation-profile.md",
+        "https://github.com/agco-adm/json-api-search-profile/blob/master/public/change-events-profile.md"
+    ]
   },
 
   "dealers": [{
@@ -23,7 +30,9 @@ GET http://api.example.com/dealers/search
 
 ## Stack
 
-- Nodejs : [elastic-harvest](https://github.com/agco-adm/elastic-harvest)
+- Nodejs :
+[harvester](https://github.com/agco/harvesterjs)
+[elastic-harvester](https://github.com/agco/elastic-harvesterjs)
 
 
 
