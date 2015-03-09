@@ -13,10 +13,10 @@ The resource suffix '/search', routes requests to the search engine rather than 
 The search data has the same shape as the base resource, supports the same json-api features
 (inclusions, sparse fields...) and the [Filtering](./filtering-profile.md) profile
 
-The main difference is that search engines provide a huge performance increase when performing queries across multiple collections (e.g. Mongodb).
+The main difference is that search engines offer a huge performance increase when performing queries across multiple resources
 
 Modern search engines such as Elasticsearch and SOLR also have advanced analytics / aggregation capabilities,
-the section below describes how these features map into the JSON-API spec.
+the section below describes how these features map can be mapped into the JSON-API spec.
 
 ## Aggregations
 
