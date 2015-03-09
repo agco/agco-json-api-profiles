@@ -1,6 +1,6 @@
 # AGCO JSON-API Change Events Profile
 
-This json api extension profile describes how change events can be accessed for a given resource
+This json api profile describes how Change Events can be accessed for a given resource
 
 Let's assume the following data is inserted at the /equipment resource :
 
@@ -84,7 +84,7 @@ Change events can be retrieved with a simple REST call using the /changes suffix
 
 ### Paging
 
-Paging should be supported
+Paging may be used when requesting changes
 
 ```
 /equipment/changes?seq=ge=6113607438701690884&limit=1
@@ -115,13 +115,12 @@ Paging should be supported
 ```
 
 
-
 ## Stream changes
 
 In order to reduce network overhead and associated latency, the change events can be streamed across as well
 
-This extension spec builds on the [server sent events](http://www.w3.org/TR/2009/WD-eventsource-20091029/),
-which standardises event streaming across plain HTTP/1.1
+This part of the spec builds on [server sent events](http://www.w3.org/TR/2009/WD-eventsource-20091029/),
+which standardises event streaming on top of plain HTTP/1.1
 
 The fact that it's leveraging pure HTTP makes it more proxy friendly than websockets,
 in addition to that it also supports automatic reconnection and transmission of arbitrary events
@@ -148,19 +147,19 @@ This enables resilience on connection breaks and initiating a stream from an arb
 
 ### Consume SSE
 
-ootb server libraries are available on various platforms : e.g. [Node](https://github.com/aslakhellesoy/eventsource-node),
+Out-of-the-box server libraries are available on various platforms : e.g. [Node](https://github.com/aslakhellesoy/eventsource-node),
 [Java](https://github.com/aslakhellesoy/eventsource-java), ...
 
-EventSource is a standard HTML5 element, with [polyfills available](http://html5please.com/#eventSource) for dated browsers
+On the browser side EventSource is a standard HTML5 element, with [polyfills](http://html5please.com/#eventSource) available for dated browsers
 
 
 
 ## Filtering
 
-Simple Filtering may be applied to change events, both Poll and Stream methods should be supported
+Simple Filtering may be applied to change events, either when requesting or streaming change events
 
 ```
-/canAlerts/changes/stream?filter.equipment=<uuid>
+/canAlerts/changes/stream?filter.equipment=...
 ```
 
 

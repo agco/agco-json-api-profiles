@@ -1,10 +1,11 @@
-# JSON API Search Profile
+# AGCO JSON API Profiles
 
 ## Profile
 
-This repository contains AGCO's JSON API [extension profiles](http://jsonapi.org/extending/),
-these profiles standardise features such as [Filtering](./public/filtering-profile.md)
-[Aggregations](./public/aggregations-profile.md) and [Change Events](./public/change-events-profile.md).
+This repository contains AGCO's JSON API [profiles](http://jsonapi.org/extending/).
+
+These profiles standardise various API features such as [Filtering](./public/filtering-profile.md)
+[Search](./public/search-profile.md) and [Change Events](./public/change-events-profile.md).
 
 ### Usage
 

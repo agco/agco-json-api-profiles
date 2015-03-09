@@ -1,10 +1,30 @@
-# AGCO JSON-API Aggregations Profile
+# AGCO JSON-API Search Profile
+
+The search profile extends JSON-API with search engine features.
+
+## Search verb
+
+The resource suffix '/search', routes requests to the search engine rather than the primary source of record.
+
+```
+/dealers/search
+```
+
+The search data has the same shape as the base resource, and supports the same json-api features
+(inclusions, sparse fields...) and the [Filtering](./filtering-profile.md) profile
+
+The main difference is that search engines provide a huge performance increase when performing queries across multiple collections (e.g. Mongodb).
+
+Modern search engines such as Elasticsearch and SOLR also have advanced analytics / aggregation capabilities,
+the section below describes how these features map into the JSON-API spec.
+
+## Aggregations
 
 Below is a quick example which showcases an aggregation
 
 ```
 # Get count of dealers per zip code 
-/dealers?aggregations=zip_agg&zip_agg.type=terms&zip_agg.property=zip
+/dealers/search?aggregations=zip_agg&zip_agg.type=terms&zip_agg.property=zip
 ```
 ```javascript
 //...
@@ -35,12 +55,13 @@ The aggregations output is inserted into the 'meta' portion of the response, the
 
 ## Aggregation Categories
 The various aggregation types can be divided into 2 categories
+
 ### Metrics
 These aggregations return value(s) derived from the documents returned by the your query.
 
 ```
 # Compute statistics (min/max/avg/sum/count) on the number_of_employees 
-/dealers?aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.field=dealer_misc.number_of_employees
+/dealers/search?aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.field=dealer_misc.number_of_employees
 ```
 ```javascript
 "meta": {
@@ -65,7 +86,7 @@ The example ( Get count of dealers per zip code ) at the start of the [Aggregati
 
 #### Nesting
 ```
-/dealers?aggregations=zip_agg&...&zip_agg.aggregations=emp_stats_agg...
+/dealers/search?aggregations=zip_agg&...&zip_agg.aggregations=emp_stats_agg...
 ```
 Each label referring to a a bucket aggregation may specify an additional .aggregations attribute, this may contain a single or comma separated list of additional nested aggregation labels. 
 
@@ -74,7 +95,7 @@ Metrics aggregations can be nested within Bucket aggregations, this makes them e
 
 ```
 # Compute statistics (min/max/avg/sum/count) on the number_of_employees per zip code
-/dealers?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.property=zip&zip_agg.aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.property=dealer_misc.number_of_employees
+/dealers/search?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.property=zip&zip_agg.aggregations=emp_stats_agg&emp_stats_agg.type=stats&emp_stats_agg.property=dealer_misc.number_of_employees
 ```
 ```javascript
 //...
@@ -112,7 +133,7 @@ Metrics aggregations can be nested within Bucket aggregations, this makes them e
 
 ```
 # Get 5 most recent founded dealerships per zip code
-/dealers?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.property=zip&zip_agg.aggregations=mostrecent_agg&mostrecent_agg.type=top_hits&mostrecent_agg.sort=-dealer_misc.founded_date&&mostrecent_agg.size=5
+/dealers/search?aggregations=zip_agg&zip_agg.type=terms&&zip_agg.property=zip&zip_agg.aggregations=mostrecent_agg&mostrecent_agg.type=top_hits&mostrecent_agg.sort=-dealer_misc.founded_date&&mostrecent_agg.size=5
 ```
 ```javascript
 //...
@@ -153,7 +174,7 @@ Bucket aggregations can also be nested within other Bucket aggregations.
 
 ```
 # Get count of dealers per brand / product_type / zip
-/dealers?aggregations=brand_agg&brand_agg.type=terms&brand_agg.property=current_contracts.brand.code&brand_agg.aggregations=product_type_agg&product_type_agg.type=terms&product_type_agg.property=current_contracts.product_type.code&product_type_agg.aggregations=zip_agg&zip_agg.type=terms&zip_agg.property=zip
+/dealers/search?aggregations=brand_agg&brand_agg.type=terms&brand_agg.property=current_contracts.brand.code&brand_agg.aggregations=product_type_agg&product_type_agg.type=terms&product_type_agg.property=current_contracts.product_type.code&product_type_agg.aggregations=zip_agg&zip_agg.type=terms&zip_agg.property=zip
 ```
 ```javascript  
 // ...
@@ -203,9 +224,9 @@ Bucket aggregations can also be nested within other Bucket aggregations.
 
 ## Features Interop
 
-The aggregation features may be combined with primary or [linked resource filters](#linked-resource-filters).
+The aggregation features may be combined with simple or linked resource Filtering
 ```
-/dealers?current_contracts.brand.code=MF&aggregations=...
+/dealers/search?current_contracts.brand.code=MF&aggregations=...
 ```
 [inclusion](http://jsonapi.org/format/#fetching-includes) and  [sparse fieldsets](http://jsonapi.org/format/#fetching-sparse-fieldsets) can be applied as well on top of the top_hits aggregation.
 
@@ -216,7 +237,10 @@ Here is an elaboration of a previous example  ( Get 5 most recent founded dealer
 
 ## Aggregation types
 
-The aggregation types and output format are more or less copied over as-is from Elasticsearch :
+The Aggregation profile is heavily inspired by Elasticsearch Aggregations and borrows a lot of the concepts.
+
+A good place to start for some more reference on the various aggregation types and parameters which can be used is
+the [Elasticsearch Aggregations documentation](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current-aggregations.html)
 
 - Metrics :   
   min, max, sum, avg, stats, extended_stats, percentiles, percentile_ranks, top_hits, cardinality, geo_bounds
@@ -224,9 +248,8 @@ The aggregation types and output format are more or less copied over as-is from 
 - Bucketing :
   terms, significant_terms, range, date_range, filter, filters, missing, histogram, date_histogram, geo_distance
 
-Read through the Elasticsearch documentation pages to get a more in-depth understanding on the various aggregation types and the available parameters : http://www.elasticsearch.org/guide/en/elasticsearch/reference/current-aggregations.html.
 
-###  Elasticsearch vs Search Profile
+###  Elasticsearch vs Aggregation Profile
 
 Some of the paremeters are renamed to remain consistent with the rest of the JSONAPI spec.
 
@@ -245,6 +268,8 @@ The Elasticsearch top_hits aggregation also accepts a 'size' parameter, this is 
 
 ## Elasticsearch lock-in
 
-The profile Aggregation GET syntax maps in a generic way to Elasticsearch POST requests, however if another search engine would be used to back the implementation of the profile, it should be possible to re-map the syntax (e.g. SOLR facets / pivots ).
+Even though the Aggregation profile GET syntax maps very close to the Elasicsearch syntax, there is no direct coupling as such
+
+It should be possible to remap the syntax to another bit of middleware if we would opt to replace Elasticsearch at some point (e.g. SOLR facets / pivots ).
 
 

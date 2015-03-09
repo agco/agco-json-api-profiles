@@ -40,20 +40,20 @@ Filter on attributes of the [linked resources](http://jsonapi.org/format/#docume
 - Filter a linked resource
 
   ```
-  /trackingData/search?filter.canVariable.name=ENGINE_LOAD
+  /trackingData?filter.canVariable.name=ENGINE_LOAD
   ```
 
 - Combine with a primary resource filter   
   ```
-  /trackingData/search?filter.canVariable.name=ENGINE_LOAD&filter.raw=gt=10
+  /trackingData?filter.canVariable.name=ENGINE_LOAD&filter.raw=gt=10
   ```
   
 - Filter a linked resource 2 levels deep : trackingPoint -> equipment
   ```
-  /trackingData/search?filter.trackingPoint.equipment.vin=19UYA31581L000000
+  /trackingData?filter.trackingPoint.equipment.vin=19UYA31581L000000
   ```
   
 - Filter multiple linked resources in one go  
   ```
-  /trackingData/search?filter.trackingPoint.equipment.vin=19UYA31581L000000&filter.canVariable.name=ENGINE_LOAD&filter.raw=gt=10
+  /trackingData?filter.trackingPoint.equipment.vin=19UYA31581L000000&filter.canVariable.name=ENGINE_LOAD&filter.raw=gt=10
   ```
