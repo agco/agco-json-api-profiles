@@ -6,13 +6,13 @@ This extension spec defines the implementation of that parameter throughout vari
 ## Simple
 
 ```
-/equipment?filter.vin=19UYA31581L000000
+/equipment?vin=19UYA31581L000000
 ```
 
 ## Regex
 
 ```
-/equipment?filter.serialNumber=123*
+/equipment?serialNumber=123*
 ```
 In general URIs as defined by RFC 3986 (see Section 2: Characters) may contain any of the following characters:
 ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;=.
@@ -24,11 +24,11 @@ FIQL syntax should be used for range queries :
 
 
 ```
-/trackingData?filter.raw=lt=50
-/trackingData?filter.raw=ge=50&filter.raw=lt=100
+/trackingData?raw=lt=50
+/trackingData?raw=ge=50&filter.raw=lt=100
 
-/trackingPoint?filter.alt=le=50
-/trackingPoint?filter.alt=gt=50
+/trackingPoint?alt=le=50
+/trackingPoint?alt=gt=50
 
 ```
 
@@ -40,20 +40,20 @@ Filter on attributes of the [linked resources](http://jsonapi.org/format/#docume
 - Filter a linked resource
 
   ```
-  /trackingData?filter.canVariable.name=ENGINE_LOAD
+  /trackingData?linked.canVariable.name=ENGINE_LOAD
   ```
 
 - Combine with a primary resource filter   
   ```
-  /trackingData?filter.canVariable.name=ENGINE_LOAD&filter.raw=gt=10
+  /trackingData?linked.canVariable.name=ENGINE_LOAD&raw=gt=10
   ```
   
 - Filter a linked resource 2 levels deep : trackingPoint -> equipment
   ```
-  /trackingData?filter.trackingPoint.equipment.vin=19UYA31581L000000
+  /trackingData?linked.trackingPoint.equipment.vin=19UYA31581L000000
   ```
   
 - Filter multiple linked resources in one go  
   ```
-  /trackingData?filter.trackingPoint.equipment.vin=19UYA31581L000000&filter.canVariable.name=ENGINE_LOAD&filter.raw=gt=10
+  /trackingData?linked.trackingPoint.equipment.vin=19UYA31581L000000&canVariable.name=ENGINE_LOAD&raw=gt=10
   ```
