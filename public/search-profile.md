@@ -226,7 +226,7 @@ Bucket aggregations can also be nested within other Bucket aggregations.
 
 The aggregation features may be combined with simple or linked resource Filtering
 ```
-/dealers/search?current_contracts.brand.code=MF&aggregations=...
+/dealers/search?filter.current_contracts.brand.code=MF&aggregations=...
 ```
 [inclusion](http://jsonapi.org/format/#fetching-includes) and  [sparse fieldsets](http://jsonapi.org/format/#fetching-sparse-fieldsets) can be applied as well on top of the top_hits aggregation.
 

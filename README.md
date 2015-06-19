@@ -1,4 +1,4 @@
-# AGCO JSON API Profiles
+# AGCO JSON API Profiles ( JSONAPI 1.0 )
 
 ## Profile
 
