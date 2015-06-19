@@ -15,9 +15,9 @@ GET http://api.example.com/dealers
 {
   "meta": {
     "profile": [
-        "https://github.com/agco-adm/json-api-search-profile/blob/master/public/filtering-profile.md",
-        "https://github.com/agco-adm/json-api-search-profile/blob/master/public/aggregation-profile.md",
-        "https://github.com/agco-adm/json-api-search-profile/blob/master/public/change-events-profile.md"
+        "https://github.com/agco/agco-json-api-profiles/blob/master/public/filtering-profile.md",
+        "https://github.com/agco/agco-json-api-profiles/blob/master/public/search-profile.md",
+        "https://github.com/agco/agco-json-api-profiles/blob/master/public/change-events-profile.md"
     ]
   },
 
