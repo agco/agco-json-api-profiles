@@ -1,4 +1,4 @@
-# AGCO JSON-API Aggregations Profile
+# AGCO JSON-API Filtering Profile
 
 In terms of filtering the JSON API spec defines a reserved query parameter : filter
 This extension spec defines the implementation of that parameter throughout various scenarios
