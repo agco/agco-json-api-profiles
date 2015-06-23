@@ -103,7 +103,7 @@ The fact that it's leveraging pure HTTP makes it more proxy friendly than websoc
 in addition to that it also supports automatic reconnection and transmission of arbitrary events
 
 
-As demonstrated below, it's sufficient to append a /stream suffix to get back a stream of data
+As demonstrated below, it's sufficient to append a /stream suffix to get back a stream of data  
 
 ```
 /equipment/changes/stream
