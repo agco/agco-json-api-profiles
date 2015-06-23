@@ -109,6 +109,8 @@ As demonstrated below, it's sufficient to append a /stream suffix to get back a 
 /equipment/changes/stream
 ```
 
+...
+
 ```
 "event": "equipment_insert",
 "id": "6113607438701690883",
