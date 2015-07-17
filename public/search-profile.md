@@ -248,6 +248,8 @@ the [Elasticsearch Aggregations documentation](http://www.elasticsearch.org/guid
 - Bucketing :
   terms, significant_terms, range, date_range, filter, filters, missing, histogram, date_histogram, geo_distance
 
+- Scripted: (powered by custom elastic-search scripts)
+  sample: required parameters: type=sample, maxSamples=5
 
 ###  Elasticsearch vs Aggregation Profile
 
