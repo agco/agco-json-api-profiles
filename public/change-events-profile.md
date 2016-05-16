@@ -82,7 +82,8 @@ Change events can be retrieved with a simple REST call using the /changes suffix
             }
         }
     ]
-}```
+}
+```
 
 ### Paging
 
