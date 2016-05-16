@@ -43,6 +43,7 @@ Change events can be retrieved with a simple REST call using the /changes suffix
 ```
 /equipment/changes
 ```
+
 ```javascript
 {
     "equipment_changes": [
@@ -82,7 +83,8 @@ Change events can be retrieved with a simple REST call using the /changes suffix
             }
         }
     ]
-}```
+}
+```
 
 ### Paging
 
@@ -108,6 +110,7 @@ As demonstrated below, it's sufficient to append a /stream suffix to get back a 
 ```
 /equipment/changes/stream
 ```
+
 ```
 "event": "equipment_insert",
 "id": "6113607438701690883",
@@ -130,7 +133,6 @@ Out-of-the-box server libraries are available on various platforms : e.g. [Node]
 On the browser side EventSource is a standard HTML5 element, with [polyfills](http://html5please.com/#eventSource) available for dated browsers
 
 
-
 ## Filtering
 
 Simple Filtering may be applied to change events, either when requesting or streaming change events
@@ -138,6 +140,3 @@ Simple Filtering may be applied to change events, either when requesting or stre
 ```
 /canAlerts/changes/stream?equipment=...
 ```
-
-
-
